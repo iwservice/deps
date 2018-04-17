@@ -1,9 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: dlewandowski
- * Date: 4/17/18
- * Time: 11:16 AM
+ * Released under GPLv3
+ * Created by dlewandowski@iwservice.pl
  */
 
 namespace IWService\DependencyInjection;
@@ -28,13 +26,14 @@ class Container implements ContainerInterface
     {
         /* at first register yourself as ContainerInterface supplier */
         $this->enabled[ContainerInterface::class] = $this;
+        $this->available[ContainerInterface::class] = self::class;
     }
 
     /**
      * @param $interface
      * @param $class
      */
-    public function register($interface, $class)
+    public function set($interface, $class)
     {
         $this->available[$interface] = $class;
     }
@@ -74,5 +73,10 @@ class Container implements ContainerInterface
             $parameters[] = $this->get($parameter->getClass()->getName());
         }
         return $ref->newInstanceArgs($parameters);
+    }
+
+    public function has($interface)
+    {
+        return array_key_exists($interface, $this->available);
     }
 }

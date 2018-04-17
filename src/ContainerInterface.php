@@ -11,6 +11,7 @@ namespace IWService\DependencyInjection;
 
 interface ContainerInterface
 {
-    public function register($interface, $class);
     public function get($interface);
+    public function has($interface);
+    public function set($interface, $class);
 }
