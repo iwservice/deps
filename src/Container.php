@@ -31,10 +31,15 @@ class Container implements ContainerInterface
 
     /**
      * @param $interface
-     * @param $class
+     * @param object $class
      */
     public function set($interface, $class)
     {
+        if (is_object($class)) {
+            $this->enabled[$interface] = $class;
+            $this->available[$interface] = get_class($class);
+            return;
+        }
         $this->available[$interface] = $class;
     }
 
@@ -75,6 +80,10 @@ class Container implements ContainerInterface
         return $ref->newInstanceArgs($parameters);
     }
 
+    /**
+     * @param $interface
+     * @return bool
+     */
     public function has($interface)
     {
         return array_key_exists($interface, $this->available);
